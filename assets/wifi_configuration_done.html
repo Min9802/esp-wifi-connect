@@ -45,7 +45,7 @@
         </svg>
         
         <div class="message">
-            <p>设备将在 <span id="countdown">3</span> 秒后重启</p>
+            <p>Thiết bị sẽ được khởi động lại trong <span id="countdown">3</span> giây</p>
             <p>Device will restart in <span id="countdown-en">3</span> seconds</p>
         </div>
     </div>
@@ -68,10 +68,10 @@
                     })
                     .then(response => {
                         if (response.ok) {
-                            console.log('重启指令已发送');
+                            console.log('Lệnh khởi động lại đã được gửi');
                             window.close();
                         } else {
-                            console.error('发送重启指令失败');
+                            console.error('Gửi lệnh khởi động lại thất bại');
                         }
                     })
                     .catch(error => {

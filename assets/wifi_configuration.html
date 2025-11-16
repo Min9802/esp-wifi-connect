@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Network Configuration</title>
     <meta charset="utf-8">
@@ -7,62 +8,134 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <style type="text/css">
         /* ========== Base Styles ========== */
-        body {
-            font-family: Arial, sans-serif;
+        * {
             margin: 0;
             padding: 0;
-            background-color: #f0f0f0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
         }
 
         /* ========== Form Elements ========== */
         label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #374151;
+            font-size: 14px;
         }
+
         input {
             width: 100%;
-            padding: 5px;
+            padding: 12px 16px;
             box-sizing: border-box;
-            border: 1px solid #ccc;
-            border-radius: 3px;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            background-color: #fff;
         }
+
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
         input[type="submit"] {
-            background-color: #007bff;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: #fff;
             border: none;
-            border-radius: 3px;
-            padding: 10px;
+            border-radius: 10px;
+            padding: 14px 24px;
             cursor: pointer;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 14px 0 rgba(102, 126, 234, 0.4);
         }
+
         input[type="submit"]:hover {
-            background-color: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px 0 rgba(102, 126, 234, 0.6);
         }
+
+        input[type="submit"]:active {
+            transform: translateY(0);
+        }
+
         input[type="submit"]:disabled {
-            background-color: #ccc;
+            background: #9ca3af;
             cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
         }
-        #remember_bssid, #sleep_mode {
+
+        #remember_bssid,
+        #sleep_mode {
             width: auto;
+            margin: 0;
+        }
+
+        button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 6px 10px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        button:hover {
+            background-color: rgba(0, 0, 0, 0.05);
         }
 
         /* ========== AP List Styles ========== */
         #ap_list {
             margin-top: 20px;
-            border-top: 1px solid #ccc;
-            padding-top: 10px;
+            padding-top: 20px;
         }
+
         #ap_list .scanning {
             font-style: italic;
-            color: #666;
+            color: #6b7280;
+            text-align: center;
+            padding: 20px;
         }
+
         #ap_list a {
-            display: block;
-            margin-top: 5px;
-            color: #007bff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 8px;
+            padding: 14px 16px;
+            color: #374151;
             text-decoration: none;
+            background-color: #fff;
+            border-radius: 10px;
+            border: 2px solid #e5e7eb;
+            transition: all 0.3s ease;
+            font-weight: 500;
         }
+
         #ap_list a:hover {
-            text-decoration: underline;
+            border-color: #667eea;
+            background-color: #f9fafb;
+            transform: translateX(4px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
         }
 
         /* ========== Language Switcher ========== */
@@ -70,63 +143,150 @@
             position: absolute;
             top: 20px;
             right: 20px;
+            z-index: 100;
         }
+
         .language-switch select {
-            padding: 5px;
-            border-radius: 3px;
-            border: 1px solid #ccc;
+            padding: 10px 14px;
+            border-radius: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .language-switch select:hover {
+            border-color: rgba(255, 255, 255, 0.5);
+            background-color: #fff;
         }
 
         /* ========== Tab Styles ========== */
         .tabs {
             display: flex;
-            margin-top: 20px;
-            margin-bottom: 0;
-            padding-left: 20px;
-            border-bottom: 1px solid #ccc;
-        }
-        .tab {
-            padding: 10px 20px;
-            cursor: pointer;
-            border: 1px solid #ccc;
+            gap: 8px;
+            padding: 20px 20px 0;
+            background: transparent;
             border-bottom: none;
-            border-radius: 5px 5px 0 0;
-            margin-right: 5px;
-            background-color: #f0f0f0;
-            position: relative;
-            top: 1px;
         }
+
+        .tab {
+            padding: 12px 24px;
+            cursor: pointer;
+            border: none;
+            border-radius: 10px 10px 0 0;
+            background-color: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            font-weight: 600;
+            color: #6b7280;
+        }
+
+        .tab:hover {
+            background-color: rgba(255, 255, 255, 0.85);
+            color: #374151;
+        }
+
         .tab.active {
             background-color: #fff;
+            color: #667eea;
+            box-shadow: 0 -4px 12px rgba(102, 126, 234, 0.1);
         }
+
         .tab-content {
             display: none;
-            border-top: none;
-            padding: 20px;
+            padding: 30px;
             background-color: #fff;
+            border-radius: 10px 10px 10px 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.3s ease;
         }
+
         .tab-content.active {
             display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ========== Card Styles ========== */
+        h3 {
+            color: #1f2937;
+            margin-bottom: 20px;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        #saved_list_container {
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: #f9fafb;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+        }
+
+        #saved_list {
+            list-style: none;
+            padding: 0;
+        }
+
+        #saved_list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            background-color: #fff;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+            transition: all 0.2s ease;
+        }
+
+        #saved_list li:hover {
+            border-color: #cbd5e1;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .error {
+            color: #ef4444;
+            font-weight: 500;
+            padding: 12px;
+            background-color: #fee2e2;
+            border-radius: 8px;
+            margin-bottom: 16px;
         }
 
         /* ========== Toast Message Styles ========== */
         .toast {
             position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: rgba(0, 0, 0, 0.8);
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 15px 30px;
-            border-radius: 8px;
+            padding: 16px 24px;
+            border-radius: 12px;
             z-index: 1000;
             opacity: 0;
-            transition: opacity 0.3s ease-in-out;
+            transform: translateX(100px);
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
             min-width: 200px;
             text-align: center;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+            font-weight: 600;
         }
+
         .toast.show {
             opacity: 1;
+            transform: translateX(0);
         }
 
         /* ========== Loading Spinner Styles ========== */
@@ -137,42 +297,97 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
+            backdrop-filter: blur(10px);
             z-index: 2000;
             justify-content: center;
             align-items: center;
         }
+
         .loading-overlay.show {
             display: flex;
+            animation: fadeIn 0.3s ease;
         }
+
         .loading-spinner {
-            width: 60px;
-            height: 60px;
-            border: 6px solid rgba(255, 255, 255, 0.3);
+            width: 70px;
+            height: 70px;
+            border: 6px solid rgba(255, 255, 255, 0.2);
             border-top-color: #ffffff;
             border-radius: 50%;
-            animation: spin 1s linear infinite;
+            animation: spin 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
         }
+
         .loading-content {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 20px;
+            gap: 24px;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 40px 60px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
         }
+
         .loading-text {
             color: white;
             font-size: 18px;
-            font-weight: bold;
+            font-weight: 700;
+            letter-spacing: 0.5px;
         }
+
         @keyframes spin {
-            to { transform: rotate(360deg); }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ========== Responsive Design ========== */
+        @media (max-width: 600px) {
+            .container {
+                padding: 10px;
+            }
+
+        .tab-content {
+            padding: 20px;
+        }
+
+        .language-switch {
+            top: 10px;
+            right: 10px;
+        }
+
+        .tabs {
+            padding: 10px 10px 0;
+        }
+
+        .tab {
+            padding: 10px 16px;
+            font-size: 14px;
+        }
+
+        h3 {
+            font-size: 18px;
+        }
+
+        .toast {
+            right: 10px;
+            left: 10px;
+            transform: translateY(-100px);
+        }
+
+        .toast.show {
+            transform: translateY(0);
+        }
         }
     </style>
 </head>
+
 <body>
     <!-- Toast notification -->
     <div class="toast" id="toast"></div>
-    
+
     <!-- Loading overlay -->
     <div class="loading-overlay" id="loadingOverlay">
         <div class="loading-content">
@@ -180,7 +395,7 @@
             <div class="loading-text" data-lang="connecting">Connecting...</div>
         </div>
     </div>
-    
+
     <!-- Language switcher -->
     <div class="language-switch">
         <select id="language" onchange="changeLanguage()">
@@ -224,99 +439,107 @@
             <option value="zh-TW">繁體中文</option>
         </select>
     </div>
-    
+
     <!-- Tabs -->
-    <div class="tabs">
-        <div class="tab active" onclick="switchTab('wifi')" data-lang="wifi_tab">Wi-Fi Config</div>
-        <div class="tab" onclick="switchTab('advanced')" data-lang="advanced_tab">Advanced</div>
-    </div>
-
-    <!-- Wi-Fi Configuration Tab -->
-    <div id="wifi-tab" class="tab-content active">
-        <!-- Saved Wi-Fi List -->
-        <div id="saved_list_container" style="display: none;">
-            <h3 data-lang="saved_wifi">Saved Wi-Fi</h3>
-            <ul id="saved_list">
-                <li><span>SSID</span></li>
-            </ul>
+    <div class="container">
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab('wifi')" data-lang="wifi_tab">Wi-Fi Config</div>
+            <div class="tab" onclick="switchTab('advanced')" data-lang="advanced_tab">Advanced</div>
         </div>
-        
-        <!-- New Wi-Fi Connection -->
-        <div>
-            <h3 data-lang="new_wifi">New Wi-Fi</h3>
-            <p class="error" style="color: red; text-align: center;" id="error"></p>
-            <form action="/submit" method="post" onsubmit="submitForm(event)">
-                <p>
-                    <label for="ssid">SSID:</label>
-                    <input type="text" id="ssid" name="ssid" required readonly>
-                </p>
-                <p>
-                    <label for="password" data-lang="password">Password:</label>
-                    <input type="password" id="password" name="password">
-                </p>
-                <p style="text-align: center;">
-                    <input type="submit" value="Connect" id="button" data-lang-value="connect">
-                </p>
-            </form>
-            <p id="ap_list"></p>
-        </div>
-    </div>
 
-    <!-- Advanced Configuration Tab -->
-    <div id="advanced-tab" class="tab-content">
-        <form action="/advanced/submit" method="post" onsubmit="submitAdvancedForm(event)">
-            <div>
-                <h3 data-lang="advanced_tab">Advanced</h3>
-                <p class="error" style="color: red; text-align: center;" id="advanced_error"></p>
-                
-                <!-- OTA URL -->
-                <p>
-                    <label for="ota_url" data-lang="ota_url">Custom OTA URL:</label>
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <input type="text" id="ota_url" name="ota_url" style="flex: 1;">
-                        <button type="button" onclick="clearOtaUrl()" style="padding: 5px 10px; border: 1px solid #ccc; border-radius: 3px; background-color: #f0f0f0; cursor: pointer;">❌</button>
-                    </div>
-                </p>
-
-                <!-- Max TX Power -->
-                <p style="display: flex; align-items: center; gap: 10px;">
-                    <label for="max_tx_power" data-lang="max_tx_power" style="white-space: nowrap;">Wi-Fi Max TX Power:</label>
-                    <select id="max_tx_power" name="max_tx_power">
-                        <option value="8">2 dBm</option>
-                        <option value="20">5 dBm</option>
-                        <option value="28">7 dBm</option>
-                        <option value="34">8 dBm</option>
-                        <option value="44">11 dBm</option>
-                        <option value="52">13 dBm</option>
-                        <option value="56">14 dBm</option>
-                        <option value="60">15 dBm</option>
-                        <option value="66">16 dBm</option>
-                        <option value="72">18 dBm</option>
-                        <option value="80">20 dBm</option>
-                    </select>
-                </p>
-
-                <!-- Remember BSSID -->
-                <p style="display: flex; align-items: center; gap: 10px;">
-                    <label for="remember_bssid" style="margin: 0;">
-                        <span data-lang="remember_bssid">Remember BSSID when connecting to Wi-Fi</span>
-                    </label>
-                    <input type="checkbox" id="remember_bssid" name="remember_bssid">
-                </p>
-
-                <!-- Sleep Mode -->
-                <p style="display: flex; align-items: center; gap: 10px;">
-                    <label for="sleep_mode" style="margin: 0;">
-                        <span data-lang="sleep_mode">Enable Sleep Mode</span>
-                    </label>
-                    <input type="checkbox" id="sleep_mode" name="sleep_mode">
-                </p>
-
-                <p style="text-align: center;">
-                    <input type="submit" value="Save" id="advanced_button" data-lang-value="save">
-                </p>
+        <!-- Wi-Fi Configuration Tab -->
+        <div id="wifi-tab" class="tab-content active">
+            <!-- Saved Wi-Fi List -->
+            <div id="saved_list_container" style="display: none;">
+                <h3 data-lang="saved_wifi">Saved Wi-Fi</h3>
+                <ul id="saved_list">
+                    <li><span>SSID</span></li>
+                </ul>
             </div>
-        </form>
+
+            <!-- New Wi-Fi Connection -->
+            <div>
+                <h3 data-lang="new_wifi">New Wi-Fi</h3>
+                <p class="error" style="color: red; text-align: center; display: none;" id="error"></p>
+                <form action="/submit" method="post" onsubmit="submitForm(event)">
+                    <p style="margin-bottom: 16px;">
+                        <label for="ssid">SSID:</label>
+                        <input type="text" id="ssid" name="ssid" required readonly>
+                    </p>
+                    <p style="margin-bottom: 16px;">
+                        <label for="password" data-lang="password">Password:</label>
+                        <input type="password" id="password" name="password">
+                    </p>
+                    <p style="text-align: center;">
+                        <input type="submit" value="Connect" id="button" data-lang-value="connect">
+                    </p>
+                </form>
+                <p id="ap_list"></p>
+            </div>
+        </div>
+
+        <!-- Advanced Configuration Tab -->
+        <div id="advanced-tab" class="tab-content">
+            <form action="/advanced/submit" method="post" onsubmit="submitAdvancedForm(event)">
+                <div>
+                    <h3 data-lang="advanced_tab">Advanced</h3>
+                    <p class="error" style="color: red; text-align: center; display: none;" id="advanced_error"></p>
+
+                    <!-- OTA URL -->
+                    <p style="margin-bottom: 16px;">
+                        <label for="ota_url" data-lang="ota_url">Custom OTA URL:</label>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <input type="text" id="ota_url" name="ota_url" style="flex: 1;">
+                            <button type="button" onclick="clearOtaUrl()"
+                                style="padding: 8px 16px; border: 2px solid #e5e7eb; border-radius: 8px; background-color: #f9fafb; cursor: pointer; font-size: 18px;">❌</button>
+                        </div>
+                    </p>
+
+                    <!-- Max TX Power -->
+                    <p style="margin-bottom: 16px;">
+                        <label for="max_tx_power" data-lang="max_tx_power">Wi-Fi Max TX Power:</label>
+                        <select id="max_tx_power" name="max_tx_power"
+                            style="width: 100%; padding: 12px 16px; border: 2px solid #e5e7eb; border-radius: 10px; font-size: 15px; background-color: #fff; cursor: pointer;">
+                            <option value="8">2 dBm</option>
+                            <option value="20">5 dBm</option>
+                            <option value="28">7 dBm</option>
+                            <option value="34">8 dBm</option>
+                            <option value="44">11 dBm</option>
+                            <option value="52">13 dBm</option>
+                            <option value="56">14 dBm</option>
+                            <option value="60">15 dBm</option>
+                            <option value="66">16 dBm</option>
+                            <option value="72">18 dBm</option>
+                            <option value="80">20 dBm</option>
+                        </select>
+                    </p>
+
+                    <!-- Remember BSSID -->
+                    <p
+                        style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px; padding: 12px; background-color: #f9fafb; border-radius: 10px;">
+                        <input type="checkbox" id="remember_bssid" name="remember_bssid"
+                            style="width: 20px; height: 20px; cursor: pointer;">
+                        <label for="remember_bssid" style="margin: 0; cursor: pointer; flex: 1;">
+                            <span data-lang="remember_bssid">Remember BSSID when connecting to Wi-Fi</span>
+                        </label>
+                    </p>
+
+                    <!-- Sleep Mode -->
+                    <p
+                        style="display: flex; align-items: center; gap: 12px; margin-bottom: 24px; padding: 12px; background-color: #f9fafb; border-radius: 10px;">
+                        <input type="checkbox" id="sleep_mode" name="sleep_mode"
+                            style="width: 20px; height: 20px; cursor: pointer;">
+                        <label for="sleep_mode" style="margin: 0; cursor: pointer; flex: 1;">
+                            <span data-lang="sleep_mode">Enable Sleep Mode</span>
+                        </label>
+                    </p>
+
+                    <p style="text-align: center;">
+                        <input type="submit" value="Save" id="advanced_button" data-lang-value="save">
+                    </p>
+                </div>
+            </form>
+        </div>
     </div>
 
     <script type="text/javascript">
@@ -1018,83 +1241,140 @@
         // Maps browser language codes to supported language codes
         const languageMap = {
             // Arabic
-            'ar': 'ar-SA', 'ar-SA': 'ar-SA', 'ar-EG': 'ar-SA', 'ar-AE': 'ar-SA',
+            'ar': 'ar-SA',
+            'ar-SA': 'ar-SA',
+            'ar-EG': 'ar-SA',
+            'ar-AE': 'ar-SA',
             // Bulgarian
-            'bg': 'bg-BG', 'bg-BG': 'bg-BG',
+            'bg': 'bg-BG',
+            'bg-BG': 'bg-BG',
             // Catalan
-            'ca': 'ca-ES', 'ca-ES': 'ca-ES',
+            'ca': 'ca-ES',
+            'ca-ES': 'ca-ES',
             // Czech
-            'cs': 'cs-CZ', 'cs-CZ': 'cs-CZ',
+            'cs': 'cs-CZ',
+            'cs-CZ': 'cs-CZ',
             // Danish
-            'da': 'da-DK', 'da-DK': 'da-DK',
+            'da': 'da-DK',
+            'da-DK': 'da-DK',
             // German
-            'de': 'de-DE', 'de-DE': 'de-DE', 'de-AT': 'de-DE', 'de-CH': 'de-DE',
+            'de': 'de-DE',
+            'de-DE': 'de-DE',
+            'de-AT': 'de-DE',
+            'de-CH': 'de-DE',
             // Greek
-            'el': 'el-GR', 'el-GR': 'el-GR',
+            'el': 'el-GR',
+            'el-GR': 'el-GR',
             // English
-            'en': 'en-US', 'en-US': 'en-US', 'en-GB': 'en-US', 'en-CA': 'en-US', 'en-AU': 'en-US',
+            'en': 'en-US',
+            'en-US': 'en-US',
+            'en-GB': 'en-US',
+            'en-CA': 'en-US',
+            'en-AU': 'en-US',
             // Spanish
-            'es': 'es-ES', 'es-ES': 'es-ES', 'es-MX': 'es-ES', 'es-AR': 'es-ES',
+            'es': 'es-ES',
+            'es-ES': 'es-ES',
+            'es-MX': 'es-ES',
+            'es-AR': 'es-ES',
             // Persian
-            'fa': 'fa-IR', 'fa-IR': 'fa-IR',
+            'fa': 'fa-IR',
+            'fa-IR': 'fa-IR',
             // Finnish
-            'fi': 'fi-FI', 'fi-FI': 'fi-FI',
+            'fi': 'fi-FI',
+            'fi-FI': 'fi-FI',
             // Filipino
-            'fil': 'fil-PH', 'fil-PH': 'fil-PH', 'tl': 'fil-PH',
+            'fil': 'fil-PH',
+            'fil-PH': 'fil-PH',
+            'tl': 'fil-PH',
             // French
-            'fr': 'fr-FR', 'fr-FR': 'fr-FR', 'fr-CA': 'fr-FR', 'fr-BE': 'fr-FR',
+            'fr': 'fr-FR',
+            'fr-FR': 'fr-FR',
+            'fr-CA': 'fr-FR',
+            'fr-BE': 'fr-FR',
             // Hebrew
-            'he': 'he-IL', 'he-IL': 'he-IL', 'iw': 'he-IL',
+            'he': 'he-IL',
+            'he-IL': 'he-IL',
+            'iw': 'he-IL',
             // Hindi
-            'hi': 'hi-IN', 'hi-IN': 'hi-IN',
+            'hi': 'hi-IN',
+            'hi-IN': 'hi-IN',
             // Croatian
-            'hr': 'hr-HR', 'hr-HR': 'hr-HR',
+            'hr': 'hr-HR',
+            'hr-HR': 'hr-HR',
             // Hungarian
-            'hu': 'hu-HU', 'hu-HU': 'hu-HU',
+            'hu': 'hu-HU',
+            'hu-HU': 'hu-HU',
             // Indonesian
-            'id': 'id-ID', 'id-ID': 'id-ID',
+            'id': 'id-ID',
+            'id-ID': 'id-ID',
             // Italian
-            'it': 'it-IT', 'it-IT': 'it-IT', 'it-CH': 'it-IT',
+            'it': 'it-IT',
+            'it-IT': 'it-IT',
+            'it-CH': 'it-IT',
             // Japanese
-            'ja': 'ja-JP', 'ja-JP': 'ja-JP',
+            'ja': 'ja-JP',
+            'ja-JP': 'ja-JP',
             // Korean
-            'ko': 'ko-KR', 'ko-KR': 'ko-KR',
+            'ko': 'ko-KR',
+            'ko-KR': 'ko-KR',
             // Malay
-            'ms': 'ms-MY', 'ms-MY': 'ms-MY',
+            'ms': 'ms-MY',
+            'ms-MY': 'ms-MY',
             // Norwegian
-            'nb': 'nb-NO', 'nb-NO': 'nb-NO', 'no': 'nb-NO', 'nn': 'nb-NO',
+            'nb': 'nb-NO',
+            'nb-NO': 'nb-NO',
+            'no': 'nb-NO',
+            'nn': 'nb-NO',
             // Dutch
-            'nl': 'nl-NL', 'nl-NL': 'nl-NL', 'nl-BE': 'nl-NL',
+            'nl': 'nl-NL',
+            'nl-NL': 'nl-NL',
+            'nl-BE': 'nl-NL',
             // Polish
-            'pl': 'pl-PL', 'pl-PL': 'pl-PL',
+            'pl': 'pl-PL',
+            'pl-PL': 'pl-PL',
             // Portuguese
-            'pt': 'pt-PT', 'pt-PT': 'pt-PT', 'pt-BR': 'pt-PT',
+            'pt': 'pt-PT',
+            'pt-PT': 'pt-PT',
+            'pt-BR': 'pt-PT',
             // Romanian
-            'ro': 'ro-RO', 'ro-RO': 'ro-RO',
+            'ro': 'ro-RO',
+            'ro-RO': 'ro-RO',
             // Russian
-            'ru': 'ru-RU', 'ru-RU': 'ru-RU',
+            'ru': 'ru-RU',
+            'ru-RU': 'ru-RU',
             // Slovak
-            'sk': 'sk-SK', 'sk-SK': 'sk-SK',
+            'sk': 'sk-SK',
+            'sk-SK': 'sk-SK',
             // Slovenian
-            'sl': 'sl-SI', 'sl-SI': 'sl-SI',
+            'sl': 'sl-SI',
+            'sl-SI': 'sl-SI',
             // Serbian
-            'sr': 'sr-RS', 'sr-RS': 'sr-RS',
+            'sr': 'sr-RS',
+            'sr-RS': 'sr-RS',
             // Swedish
-            'sv': 'sv-SE', 'sv-SE': 'sv-SE',
+            'sv': 'sv-SE',
+            'sv-SE': 'sv-SE',
             // Thai
-            'th': 'th-TH', 'th-TH': 'th-TH',
+            'th': 'th-TH',
+            'th-TH': 'th-TH',
             // Turkish
-            'tr': 'tr-TR', 'tr-TR': 'tr-TR',
+            'tr': 'tr-TR',
+            'tr-TR': 'tr-TR',
             // Ukrainian
-            'uk': 'uk-UA', 'uk-UA': 'uk-UA',
+            'uk': 'uk-UA',
+            'uk-UA': 'uk-UA',
             // Vietnamese
-            'vi': 'vi-VN', 'vi-VN': 'vi-VN',
+            'vi': 'vi-VN',
+            'vi-VN': 'vi-VN',
             // Chinese
-            'zh': 'zh-CN', 'zh-CN': 'zh-CN', 'zh-TW': 'zh-TW', 'zh-HK': 'zh-TW'
+            'zh': 'zh-CN',
+            'zh-CN': 'zh-CN',
+            'zh-TW': 'zh-TW',
+            'zh-HK': 'zh-TW'
         };
 
         // ========== Helper Functions ==========
-        
+
         /**
          * Get supported language code from browser language
          */
@@ -1117,42 +1397,42 @@
          */
         function changeLanguage() {
             const lang = document.getElementById('language').value;
-            
+
             // Check if language is valid
             if (!translations[lang]) {
                 console.warn(`Unsupported language: ${lang}, defaulting to English`);
                 document.getElementById('language').value = 'en-US';
                 return changeLanguage();
             }
-            
+
             // Set page title
             document.title = translations[lang].title;
-            
+
             // Update text content
             document.querySelectorAll('[data-lang]').forEach(element => {
                 const key = element.getAttribute('data-lang');
                 element.textContent = translations[lang][key];
             });
-            
+
             // Update input values
             document.querySelectorAll('[data-lang-value]').forEach(element => {
                 const key = element.getAttribute('data-lang-value');
                 element.value = translations[lang][key];
             });
-            
+
             // Update AP list text based on 5G support
             const apList = document.getElementById('ap_list');
             if (apList.firstChild) {
                 const selectText = support5G ? translations[lang].select_wifi_5g : translations[lang].select_wifi;
                 apList.firstChild.textContent = selectText;
             }
-            
+
             // Save language preference
             localStorage.setItem('preferred_language', lang);
         }
 
         // ========== Wi-Fi List Management ==========
-        
+
         /**
          * Render saved Wi-Fi list
          */
@@ -1160,11 +1440,11 @@
             const savedListContainer = document.getElementById('saved_list_container');
             const savedList = document.getElementById('saved_list');
             savedList.innerHTML = '';
-            
+
             data.forEach((ssid, index) => {
                 const li = document.createElement('li');
                 let html = `<span>${ssid}</span>`;
-                
+
                 // Only add priority and delete buttons after the first item
                 if (index > 0) {
                     html += ` <span>
@@ -1172,13 +1452,14 @@
                         <button type="button" onclick="deleteItem(this, ${index})">❌</button>
                     </span>`;
                 } else {
-                    html += ` <span><button type="button" onclick="deleteItem(this, ${index})">❌</button></span>`;
+                    html +=
+                        ` <span><button type="button" onclick="deleteItem(this, ${index})">❌</button></span>`;
                 }
-                
+
                 li.innerHTML = html;
                 savedList.appendChild(li);
             });
-            
+
             // Show/hide container based on whether there are saved networks
             savedListContainer.style.display = data.length > 0 ? 'block' : 'none';
         }
@@ -1242,31 +1523,32 @@
                 .then(data => {
                     // Update global 5G support status
                     support5G = data.support_5g;
-                    
+
                     // Use select_wifi_5g if 5G is supported, otherwise use select_wifi
-                    const selectText = support5G ? translations[lang].select_wifi_5g : translations[lang].select_wifi;
+                    const selectText = support5G ? translations[lang].select_wifi_5g : translations[lang]
+                        .select_wifi;
                     apList.innerHTML = '<p>' + selectText + '</p>';
-                    
+
                     // Iterate through available APs
                     data.aps.forEach(ap => {
                         const link = document.createElement('a');
                         link.href = '#';
                         link.textContent = ap.ssid + ' (' + ap.rssi + ' dBm)';
-                        
+
                         // Add lock icon for secured networks
                         if (ap.authmode === 0) {
                             link.textContent += ' 🌐';
                         } else {
                             link.textContent += ' 🔒';
                         }
-                        
+
                         link.addEventListener('click', () => {
                             ssid.value = ap.ssid;
                         });
-                        
+
                         apList.appendChild(link);
                     });
-                    
+
                     // Refresh AP list every 5 seconds
                     setTimeout(loadAPList, 5000);
                 })
@@ -1278,13 +1560,14 @@
         }
 
         // ========== Form Submission ==========
-        
+
         /**
          * Submit Wi-Fi connection form
          */
         async function submitForm(event) {
             event.preventDefault();
             button.disabled = true;
+            error.style.display = 'none';
             error.textContent = '';
 
             // Show loading animation
@@ -1317,6 +1600,7 @@
                 // Hide loading animation on error
                 loadingOverlay.classList.remove('show');
                 error.textContent = err.message;
+                error.style.display = 'block';
                 button.disabled = false;
             }
         }
@@ -1329,6 +1613,7 @@
             const advancedButton = document.getElementById('advanced_button');
             const advancedError = document.getElementById('advanced_error');
             advancedButton.disabled = true;
+            advancedError.style.display = 'none';
             advancedError.textContent = '';
 
             const config = {
@@ -1353,15 +1638,16 @@
                 }
 
                 advancedButton.disabled = false;
-                showToast('Configuration saved');
+                showToast('✅ Configuration saved successfully!');
             } catch (err) {
                 advancedError.textContent = err.message;
+                advancedError.style.display = 'block';
                 advancedButton.disabled = false;
             }
         }
 
         // ========== UI Functions ==========
-        
+
         /**
          * Switch between tabs
          */
@@ -1370,15 +1656,15 @@
             document.querySelectorAll('.tab-content').forEach(content => {
                 content.classList.remove('active');
             });
-            
+
             // Remove active class from all tabs
             document.querySelectorAll('.tab').forEach(tab => {
                 tab.classList.remove('active');
             });
-            
+
             // Show selected tab content
             document.getElementById(tabName + '-tab').classList.add('active');
-            
+
             // Activate selected tab
             document.querySelector(`.tab[onclick="switchTab('${tabName}')"]`).classList.add('active');
         }
@@ -1402,7 +1688,7 @@
             try {
                 const response = await fetch('/advanced/config');
                 const data = await response.json();
-                
+
                 if (data.ota_url) {
                     document.getElementById('ota_url').value = data.ota_url;
                 }
@@ -1428,7 +1714,7 @@
         }
 
         // ========== Initialization ==========
-        
+
         /**
          * Initialize page on DOM load
          */
@@ -1436,15 +1722,15 @@
             // Get language setting from URL parameters
             const urlParams = new URLSearchParams(window.location.search);
             const langParam = urlParams.get('lang');
-            
+
             // Get browser language
             const browserLang = navigator.language || navigator.userLanguage;
-            
+
             // Priority: URL parameter > local storage > browser language setting
-            const savedLang = langParam || 
-                             localStorage.getItem('preferred_language') || 
-                             getSupportedLanguage(browserLang);
-            
+            const savedLang = langParam ||
+                localStorage.getItem('preferred_language') ||
+                getSupportedLanguage(browserLang);
+
             document.getElementById('language').value = savedLang;
             changeLanguage();
             loadSavedList();
@@ -1467,7 +1753,10 @@
         ssid.addEventListener('touchstart', () => {
             ssid.removeAttribute('readonly');
             ssid.focus();
-        }, {once: true});
+        }, {
+            once: true
+        });
     </script>
 </body>
+
 </html>
